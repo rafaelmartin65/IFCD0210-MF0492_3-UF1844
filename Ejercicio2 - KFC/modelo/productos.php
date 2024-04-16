@@ -1,52 +1,36 @@
 <?php
 require_once "db.php";
 
-class Productos
+class Articulos
 {
     public $codigo;
-    public $producto;
+    public $descripcion;
+    public $familia;
+    public $impuesto;
+    public $precio;
+    public $stock;
 
-    public function __construct($codigo = "",$producto="")
+    public function __construct($codigo,$descripcion,$familia,$impuesto,$precio,$stock)
     {
         $this->codigo = $codigo;
-        $this->producto =$producto;
-       
+        $this->descripcion = $descripcion;
+        $this->familia = $familia;
+        $this->impuesto = $impuesto;
+        $this->precio = $precio;
+        $this->stock = $stock;
     }
 
     public function listar() {
         try
         {
             $conn = new DB();
-            $stm = $conn->conexion()->prepare("select * from productos order by producto");
+            $stm = $conn->conexion()->prepare("select * from articulos");
             $stm->execute();
             return $stm->fetchAll(PDO::FETCH_OBJ);
         } catch (Exception $e){
             die($e->getMessage());
         }
 
-    }
-
-    public function nuevoProducto() {
-        try {
-            $basededatos = new DB();
-            $sql = "SELECT max(codigo)+1 as nuevo from combustible";
-            $clausula = $basededatos->conexion()->prepare($sql);
-            $clausula->execute();
-            return $clausula->fetch(PDO::FETCH_OBJ);
-        } catch (Exception $e) {
-            die($e->getMessage());
-        }
-    }
-
-    public function insertar() {
-        try {
-            $basededatos = new DB();
-            $sql = "insert into combustible (codigo,tipo) values (:codigo,:tipo)";
-            return $basededatos->conexion()->prepare($sql)->execute((array) $this);
-        } catch (Exception $e) {
-            die($e->getMessage());
-        }
-       
     }
 
 }
