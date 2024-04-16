@@ -15,10 +15,11 @@ fetch("familias.json")
 .then((familias) => {
   idiomaActual = "español";
   datosFamilia = familias;
-  cargaFiltroFamilias(familias[idiomaActual]);
-  fetch("KFC.json")
+  var url = "../controlador/controlador_articulos.php";
+  fetch(url)
   .then((response) => response.json())
   .then((data) => {
+    console.log(data);
     document.getElementById("listado").innerHTML = "";
     datos =  data;
     productosFiltrados = data.productos;
@@ -128,29 +129,6 @@ function cargaproductos(producto, idioma) {
   tarjeta.appendChild(cuerpo);
   document.getElementById("listado").appendChild(tarjeta);
 }
-// -----------------------------------------------
-// Cambiamos el idioma seleccionando la bandera
-// -----------------------------------------------
-let formulario = document.getElementById("formulario");
-formulario.addEventListener("click", function (event) {
-  event.preventDefault();
-  // Recorremos la lista de productos con los carteles de sus datos en el idioma elegido
-  document.getElementById("listado").innerHTML = "";
-  idiomaActual = event.target.alt;
-  if (elementosPorPagina > productosFiltrados.length){
-    final = productosFiltrados.length;
-  }
-    else
-  {
-    final = elementosPorPagina;
-  };  
-  for (let i=0;i< final;i++){
-    cargaproductos(productosFiltrados[i], idiomaActual);
-  };
-  console.log(datosFamilia[idiomaActual]);
-  cargaFiltroFamilias(datosFamilia[idiomaActual])
-  paginador(productosFiltrados,1);
-});
 
 function actual() {
   const paginas = document.getElementById("paginas");
@@ -160,30 +138,7 @@ function actual() {
     }
   }
 }
-// -----------------------------------------------
-// Damos click en anterior
-// -----------------------------------------------
-document.getElementById("anterior").addEventListener("click", () => {
-  if (actual() > 1) {
-    let paginaActual = actual() - 1;
-    // Vamos a llamar a la funcion de actualizar la pagina actual
-    paginador(productosFiltrados,paginaActual);
-    cargaPaginas(productosFiltrados,paginaActual);
-  }
-});
 
-// -----------------------------------------------
-// Damos click en siguiente
-// -----------------------------------------------
-document.getElementById("siguiente").addEventListener("click", () => {
-  console.log(actual(),totalPaginas);
-  if (actual()< totalPaginas) {
-    let paginaActual = actual() + 1;
-    // Vamos a llamar a la funcion de actualizar la pagina actual
-    paginador(productosFiltrados,paginaActual);
-    cargaPaginas(productosFiltrados,paginaActual);
-  }
-});
 
 function cargaPaginas(productos,paginaActual){
   let inicio = (paginaActual-1) * elementosPorPagina;
@@ -205,34 +160,3 @@ function cambiaPagina(event){
   paginador(productosFiltrados,event.target.text);
   cargaPaginas(productosFiltrados,event.target.text);
 }
-// -----------------------------------------------
-// Cambiamos la lista de familias segun idioma
-// -----------------------------------------------
-function cargaFiltroFamilias(familias){
-  let seleccionada = Math.max(document.getElementById("familias").selectedIndex,0);
-  document.getElementById("familias").innerHTML = "";
-  for (elemento in familias) {
-    let nomFamilia = document.createElement("option");
-    nomFamilia.value = elemento;
-    nomFamilia.innerHTML = familias[elemento];
-    document.getElementById("familias").appendChild(nomFamilia);
-  };
-  document.getElementById("familias").selectedIndex = seleccionada;
-}
-// -----------------------------------------------
-// Se dispara el filtro de familias
-// -----------------------------------------------
-document.getElementById("familias").addEventListener("change", (event) => {
-  document.getElementById("listado").innerHTML = "";
-  if (event.target.value == 0) {
-    productosFiltrados = datos.productos;
-    cargaPaginas(datos.productos,1);
-  } else {
-    productosFiltrados = datos.productos.filter(function (P) {
-      return P.familia == event.target.value;
-    });
-    cargaPaginas(productosFiltrados,1);
-  }
-  console.log(productosFiltrados);
-  paginador(productosFiltrados, 1);
-});
