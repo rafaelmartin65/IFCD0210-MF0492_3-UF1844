@@ -17,7 +17,7 @@ class Familias
         try
         {
             $conn = new DB();
-            $stm = $conn->conexion()->prepare("SELECT * from familias order by nombfamilia");
+            $stm = $conn->conexion()->prepare("SELECT * from familias");
             $stm->execute();
             return $stm->fetchAll(PDO::FETCH_OBJ);
         } catch (Exception $e){

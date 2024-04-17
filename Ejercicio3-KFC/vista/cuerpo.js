@@ -9,9 +9,14 @@ fetch(urlFamilias)
   .then((response) => response.json())
   .then((listadoFamilias) => {
     console.log(listadoFamilias);
-    let varFamilia = Object.keys(listadoFamilias).length;
-    console.log(varFamilia);
-
+    let totalFamilias = Object.keys(listadoFamilias).length;
+    for (let i = 0; i < totalFamilias; i++) {
+      let opcion = document.createElement("option");
+      console.log(listadoFamilias[i]);
+      opcion.value = listadoFamilias[i].codfamilia;
+      opcion.innerHTML = listadoFamilias[i].nombfamilia;
+      document.getElementById("familias").appendChild(opcion);
+    }
     let datos;
     let url = "../controlador/controlador_articulos.php";
     fetch(url)
@@ -30,7 +35,6 @@ fetch(urlFamilias)
 // Cargamos un producto en pantalla
 // -----------------------------------------------
 function cargaproductos(producto) {
-  console.log(producto);
   let tarjeta = document.createElement("div");
   tarjeta.classList.add("card", "mx-1");
   tarjeta.style = "width: 15rem;";
