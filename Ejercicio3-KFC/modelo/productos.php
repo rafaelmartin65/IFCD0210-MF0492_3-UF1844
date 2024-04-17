@@ -20,11 +20,15 @@ class Articulos
         $this->stock = $stock;
     }
 
-    public function listar() {
+    public function listar($filtro) {
         try
         {
             $conn = new DB();
-            $stm = $conn->conexion()->prepare("SELECT codigo,descripcion,nombfamilia as familia,stock,precio,impuesto FROM articulos inner join familias on articulos.familia = familias.codfamilia");
+            $clausula = "SELECT codigo,descripcion,nombfamilia as familia,stock,precio,impuesto FROM articulos inner join familias on articulos.familia = familias.codfamilia";
+            if ($filtro != "0") {
+                $clausula = $clausula." where articulos.familia = ".$filtro;
+            }
+            $stm = $conn->conexion()->prepare($clausula);
             $stm->execute();
             return $stm->fetchAll(PDO::FETCH_OBJ);
         } catch (Exception $e){

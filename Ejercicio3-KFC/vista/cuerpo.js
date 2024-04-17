@@ -19,17 +19,28 @@ fetch(urlFamilias)
     }
     let datos;
     let url = "../controlador/controlador_articulos.php";
-    fetch(url)
+    let formulario = new FormData(document.getElementById("filtro"));
+    fetch(url, {
+        method: "POST",
+        body: formulario}
+      )
       .then((response) => response.json())
       .then((data) => {
-        let variable = Object.keys(data).length;
-        document.getElementById("listado").innerHTML = "";
-        datos = data;
-        for (let i = 0; i < variable; i++) {
-          cargaproductos(datos[i]);
-        }
+        console.log(data)
+        cargapaginas(data);
       });
   });
+
+// -----------------------------------------------
+// Cargamos todos los productos
+// -----------------------------------------------  
+function cargapaginas(productos) {
+  let variable = Object.keys(productos).length;
+  document.getElementById("listado").innerHTML = "";
+  for (let i = 0; i < variable; i++) {
+    cargaproductos(productos[i]);
+  }
+}
 
 // -----------------------------------------------
 // Cargamos un producto en pantalla
@@ -72,3 +83,19 @@ function cargaproductos(producto) {
   tarjeta.appendChild(cuerpo);
   document.getElementById("listado").appendChild(tarjeta);
 }
+
+document.getElementById("filtro").addEventListener("change", (event) => {
+  event.preventDefault();
+  console.log(event.target.value);
+  let urlArticulos = "../controlador/controlador_articulos.php";
+  let datos = new FormData(document.getElementById("filtro"));
+  new Response(datos).text().then(console.log)
+  fetch(urlArticulos, {
+    method: "POST",
+    body: datos
+  })
+    .then((response) => response.json())
+    .then((respuesta) => {
+      cargapaginas(respuesta);
+    });
+});
