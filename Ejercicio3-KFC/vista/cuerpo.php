@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado Productos KFC</title>
+    <title>Document</title>
     <script defer src="cuerpo.js"></script>
 </head>
 <body>
