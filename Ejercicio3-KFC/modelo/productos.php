@@ -24,7 +24,7 @@ class Articulos
         try
         {
             $conn = new DB();
-            $stm = $conn->conexion()->prepare("SELECT codigo,descripcion,nombfamilia as familia,stock,precio,impuesto FROM articulos inner join familias on articulos.familia = familias.codfamilia");
+            $stm = $conn->conexion()->prepare("select * from articulos");
             $stm->execute();
             return $stm->fetchAll(PDO::FETCH_OBJ);
         } catch (Exception $e){
