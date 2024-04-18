@@ -26,7 +26,7 @@ class propiedades
         try
         {
             $conn = new DB();
-            $clausula = "SELECT id,tipo,nombidlocalidad as idlocalidad,metros,precio,dormitorio,baño FROM propiedades inner join idlocalidads on propiedades.idlocalidad = idlocalidads.codidlocalidad";
+            $clausula = "SELECT id,tipo,localidad as idlocalidad,metros,precio,dormitorio,baño FROM propiedades inner join idlocalidads on propiedades.idlocalidad = idlocalidads.codidlocalidad";
             if ($filtro != "0") {
                 $clausula = $clausula." where propiedades.idlocalidad = ".$filtro;
             }
