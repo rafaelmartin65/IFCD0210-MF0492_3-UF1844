@@ -16,7 +16,7 @@ class DB
     {
         $this->servidor = "localhost";
         $this->puerto = "3306";
-        $this->base = "tienda";
+        $this->base = "inmobiliaria";
         $this->usuario = "root";
         $this->contraseña = "";
         $this->charset = "utf8";

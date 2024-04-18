@@ -4,21 +4,20 @@ const screen = {
   10: 900,
 };
 let familias;
-let urlFamilias = "../controlador/controlador_familias.php";
-fetch(urlFamilias)
+let urlLocalidades = "../controlador/controlador_localidades.php";
+fetch(urlLocalidades)
   .then((response) => response.json())
-  .then((listadoFamilias) => {
-    console.log(listadoFamilias);
-    let totalFamilias = Object.keys(listadoFamilias).length;
-    for (let i = 0; i < totalFamilias; i++) {
+  .then((listadoLocalidades) => {
+    console.log(listadoLocalidades);
+    let totalLocalidades = Object.keys(listadoLocalidades).length;
+    for (let i = 0; i < totalLocalidades; i++) {
       let opcion = document.createElement("option");
-      console.log(listadoFamilias[i]);
-      opcion.value = listadoFamilias[i].codfamilia;
-      opcion.innerHTML = listadoFamilias[i].nombfamilia;
-      document.getElementById("familias").appendChild(opcion);
+      console.log(listadoLocalidades[i]);
+      opcion.value = listadoLocalidades[i].id;
+      opcion.innerHTML = listadoLocalidades[i].descripcion;
+      document.getElementById("localidades").appendChild(opcion);
     }
-    let datos;
-    let url = "../controlador/controlador_articulos.php";
+    let url = "../controlador/controlador_propiedades.php";
     let formulario = new FormData(document.getElementById("filtro"));
     fetch(url, {
         method: "POST",
@@ -45,22 +44,22 @@ function cargapaginas(productos) {
 // -----------------------------------------------
 // Cargamos un producto en pantalla
 // -----------------------------------------------
-function cargaproductos(producto) {
+function cargaproductos(propiedad) {
   let tarjeta = document.createElement("div");
   tarjeta.classList.add("card", "mx-1");
   tarjeta.style = "width: 15rem;";
   let foto = document.createElement("img");
-  foto.src = `./imagenes/${producto.codigo}.jpg`;
+  foto.src = `./imagenes/${propiedad.id}.jpg`;
   foto.classList.add("card-img-top", "img-fluid");
   tarjeta.appendChild(foto);
   let cuerpo = document.createElement("div");
   cuerpo.classList.add("card-body", "py-0");
-  let entries = Object.entries(producto);
+  let entries = Object.entries(propiedad);
   let fragmento = new DocumentFragment();
   entries.forEach(([key, value]) => {
-    if (key != "codigo") {
+    if (key != "id") {
       switch (true) {
-        case key == "descripcion": {
+        case key == "tipo": {
           let titulo = document.createElement("h5");
           titulo.classList.add("my-0");
           let auxiliar = key.substring(0, 1).toUpperCase() + key.substring(1);
@@ -87,10 +86,10 @@ function cargaproductos(producto) {
 document.getElementById("filtro").addEventListener("change", (event) => {
   event.preventDefault();
   console.log(event.target.value);
-  let urlArticulos = "../controlador/controlador_articulos.php";
+  let urlPropiedades = "../controlador/controlador_propiedades.php";
   let datos = new FormData(document.getElementById("filtro"));
   new Response(datos).text().then(console.log)
-  fetch(urlArticulos, {
+  fetch(urlPropiedades, {
     method: "POST",
     body: datos
   })

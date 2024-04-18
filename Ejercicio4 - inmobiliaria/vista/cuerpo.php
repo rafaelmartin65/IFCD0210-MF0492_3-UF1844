@@ -9,7 +9,7 @@
 </head>
 <body>
     <form action="" id="filtro" method="post">
-        <select name="familias" id="familias"></select>
+        <select name="localidades" id="localidades"></select>
     </form>
     
     <div id="listado" class="d-flex flex-wrap justify-content-center"></div>
