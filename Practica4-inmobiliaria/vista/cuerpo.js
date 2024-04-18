@@ -4,21 +4,21 @@ const screen = {
   10: 900,
 };
 let familias;
-let urlFamilias = "../controlador/controlador_familias.php";
+let urlFamilias = "../controlador/controlador_localidades.php";
 fetch(urlFamilias)
   .then((response) => response.json())
-  .then((listadoFamilias) => {
-    console.log(listadoFamilias);
-    let totalFamilias = Object.keys(listadoFamilias).length;
-    for (let i = 0; i < totalFamilias; i++) {
+  .then((listadoLocalidades) => {
+    console.log(listadoLocalidades);
+    let totalLocalidades = Object.keys(listadoLocalidades).length;
+    for (let i = 0; i < totalLocalidades; i++) {
       let opcion = document.createElement("option");
-      console.log(listadoFamilias[i]);
-      opcion.value = listadoFamilias[i].codfamilia;
-      opcion.innerHTML = listadoFamilias[i].nombfamilia;
-      document.getElementById("familias").appendChild(opcion);
+      console.log(listadoLocalidades[i]);
+      opcion.value = listadoLocalidades[i].id;
+      opcion.innerHTML = listadoLocalidades[i].decripcion;
+      document.getElementById("localidades").appendChild(opcion);
     }
     let datos;
-    let url = "../controlador/controlador_articulos.php";
+    let url = "../controlador/controlador_propiedades.php";
     let formulario = new FormData(document.getElementById("filtro"));
     fetch(url, {
         method: "POST",
@@ -34,18 +34,18 @@ fetch(urlFamilias)
 // -----------------------------------------------
 // Cargamos todos los productos
 // -----------------------------------------------  
-function cargapaginas(productos) {
-  let variable = Object.keys(productos).length;
+function cargapaginas(propiedades) {
+  let variable = Object.keys(propiedades).length;
   document.getElementById("listado").innerHTML = "";
   for (let i = 0; i < variable; i++) {
-    cargaproductos(productos[i]);
+    cargapropiedades(propiedades[i]);
   }
 }
 
 // -----------------------------------------------
 // Cargamos un producto en pantalla
 // -----------------------------------------------
-function cargaproductos(producto) {
+function cargapropiedades(producto) {
   let tarjeta = document.createElement("div");
   tarjeta.classList.add("card", "mx-1");
   tarjeta.style = "width: 15rem;";
@@ -87,10 +87,10 @@ function cargaproductos(producto) {
 document.getElementById("filtro").addEventListener("change", (event) => {
   event.preventDefault();
   console.log(event.target.value);
-  let urlArticulos = "../controlador/controlador_articulos.php";
+  let urlPropiedades = "../controlador/controlador_propiedades.php";
   let datos = new FormData(document.getElementById("filtro"));
   new Response(datos).text().then(console.log)
-  fetch(urlArticulos, {
+  fetch(urlPropiedades, {
     method: "POST",
     body: datos
   })

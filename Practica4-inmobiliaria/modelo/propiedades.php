@@ -1,7 +1,7 @@
 <?php
 require_once "db.php";
 
-class propiedades
+class Propiedades
 {
     public $id;
     public $tipo;
@@ -26,7 +26,7 @@ class propiedades
         try
         {
             $conn = new DB();
-            $clausula = "SELECT id,tipo,localidad as idlocalidad,metros,precio,dormitorio,baño FROM propiedades inner join idlocalidads on propiedades.idlocalidad = idlocalidads.codidlocalidad";
+            $clausula = "select p.id, p.tipo, p.metros, p.dormitorio, p.baño, p.precio, l.descripcion from inmobiliaria.propiedades p join localidades l on idlocalidad = l.id";
             if ($filtro != "0") {
                 $clausula = $clausula." where propiedades.idlocalidad = ".$filtro;
             }

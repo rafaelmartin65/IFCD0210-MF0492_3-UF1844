@@ -1,7 +1,7 @@
 <?php
 require_once "db.php";
 
-class localidades
+class Localidades
 {
     public $id;
     public $descripcion;
