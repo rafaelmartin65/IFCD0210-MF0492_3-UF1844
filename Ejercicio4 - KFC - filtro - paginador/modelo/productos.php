@@ -37,5 +37,21 @@ class Articulos
         }
     }
 
+    public function contador($filtro){
+        try
+        {
+            $conn = new DB();
+            $clausula = "SELECT ceiling(count(*)/10) as total FROM articulos ";
+            if ($filtro != "0") {
+                $clausula = $clausula." where articulos.familia = ".$filtro;
+            }
+            $stm = $conn->conexion()->prepare($clausula);
+            $stm->execute();
+            return $stm->fetch(PDO::FETCH_OBJ);
+        } catch (Exception $e){
+            die($e->getMessage());
+        }
+    }
+
 }
 ?>

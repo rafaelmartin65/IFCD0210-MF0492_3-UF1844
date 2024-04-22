@@ -8,32 +8,38 @@ let urlFamilias = "../controlador/controlador_familias.php";
 fetch(urlFamilias)
   .then((response) => response.json())
   .then((listadoFamilias) => {
-    console.log(listadoFamilias);
     let totalFamilias = Object.keys(listadoFamilias).length;
     for (let i = 0; i < totalFamilias; i++) {
       let opcion = document.createElement("option");
-      console.log(listadoFamilias[i]);
       opcion.value = listadoFamilias[i].codfamilia;
       opcion.innerHTML = listadoFamilias[i].nombfamilia;
       document.getElementById("familias").appendChild(opcion);
     }
-    let datos;
-    let url = "../controlador/controlador_articulos.php";
     let formulario = new FormData(document.getElementById("filtro"));
-    fetch(url, {
-        method: "POST",
-        body: formulario}
-      )
+    let urlContador = "../controlador/controlador_articulos_contador.php";
+    fetch(urlContador, {
+      method: "POST",
+      body: formulario,
+    })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
-        cargapaginas(data);
+        console.log(data);
+        let url = "../controlador/controlador_articulos.php";
+        fetch(url, {
+          method: "POST",
+          body: formulario,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            cargapaginas(data);
+          });
       });
   });
 
 // -----------------------------------------------
 // Cargamos todos los productos
-// -----------------------------------------------  
+// -----------------------------------------------
 function cargapaginas(productos) {
   let variable = Object.keys(productos).length;
   document.getElementById("listado").innerHTML = "";
@@ -86,16 +92,24 @@ function cargaproductos(producto) {
 
 document.getElementById("filtro").addEventListener("change", (event) => {
   event.preventDefault();
-  console.log(event.target.value);
   let urlArticulos = "../controlador/controlador_articulos.php";
   let datos = new FormData(document.getElementById("filtro"));
-  new Response(datos).text().then(console.log)
-  fetch(urlArticulos, {
+  // new Response(datos).text().then(console.log);
+  let urlContador = "../controlador/controlador_articulos_contador.php";
+  fetch(urlContador, {
     method: "POST",
-    body: datos
+    body: datos,
   })
     .then((response) => response.json())
-    .then((respuesta) => {
-      cargapaginas(respuesta);
+    .then((data) => {
+      console.log(data.total);
+      fetch(urlArticulos, {
+        method: "POST",
+        body: datos,
+      })
+        .then((response) => response.json())
+        .then((respuesta) => {
+          cargapaginas(respuesta);
+        });
     });
 });
